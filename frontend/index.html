@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Predição de Diabetes</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #34495e;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"], input[type="number"], select {
+      padding: 12px 16px;
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .race-section {
+      background: rgba(102, 126, 234, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .race-title {
+      font-weight: 600;
+      color: #34495e;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .race-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .race-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .race-option input {
+      width: auto;
+      margin: 0;
+    }
+
+    .race-option label {
+      margin: 0;
+      font-weight: 500;
+      color: #555;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #res {
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .result-healthy {
+      background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+      color: #2d5a3d;
+      border: 2px solid #7fb992;
+    }
+
+    .result-diabetes {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+      color: #d63031;
+      border: 2px solid #e17055;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+        margin: 10px;
+      }
+      
+      .race-options {
+        grid-template-columns: 1fr;
+      }
+      
+      h2 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Predição de Diabetes</h2>
+    <form id="form">
+      <div class="field-group">
+        <label for="gender">Gênero*:</label>
+        <select name="gender" id="gender" required>
+          <option value="">Selecione</option>
+          <option value="Male">Masculino</option>
+          <option value="Female">Feminino</option>
+          <option value="Other">Outro</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="age">Idade*:</label>
+        <input name="age" id="age" type="number" min="0" required>
+      </div>
+      <div class="field-group">
+        <label for="bmi">Índice de Massa Corporal (IMC)*:</label>
+        <input name="bmi" id="bmi" type="number" step="0.01" min="0" required>
+      </div>
+      <div class="field-group">
+        <label for="hbA1c_level">Nível de HbA1c (%)*:</label>
+        <input name="hbA1c_level" id="hbA1c_level" type="number" step="0.01" min="0" required>
+      </div>
+      <div class="field-group">
+        <label for="blood_glucose_level">Glicose no Sangue (mg/dL)*:</label>
+        <input name="blood_glucose_level" id="blood_glucose_level" type="number" min="0" required>
+      </div>
+      <div class="field-group">
+        <label for="hypertension">Hipertensão*:</label>
+        <select name="hypertension" id="hypertension" required>
+          <option value="">Selecione</option>
+          <option value="1">Sim</option>
+          <option value="0">Não</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="heart_disease">Doença Cardíaca*:</label>
+        <select name="heart_disease" id="heart_disease" required>
+          <option value="">Selecione</option>
+          <option value="1">Sim</option>
+          <option value="0">Não</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="smoking_history">Histórico de Fumo*:</label>
+        <select name="smoking_history" id="smoking_history" required>
+          <option value="">Selecione</option>
+          <option value="never">Nunca fumou</option>
+          <option value="No Info">Sem informação</option>
+          <option value="current">Fumante atual</option>
+          <option value="former">Ex-fumante</option>
+          <option value="not current">Não é fumante atual</option>
+          <option value="ever">Já fumou</option>
+        </select>
+      </div>
+      <div class="field-group race-section">
+        <div class="race-title">Raça*:</div>
+        <div class="race-options">
+          <div class="race-option">
+            <input type="radio" name="race" id="race_AfricanAmerican" value="AfricanAmerican" required>
+            <label for="race_AfricanAmerican">Africano Americano</label>
+          </div>
+          <div class="race-option">
+            <input type="radio" name="race" id="race_Asian" value="Asian">
+            <label for="race_Asian">Asiático</label>
+          </div>
+          <div class="race-option">
+            <input type="radio" name="race" id="race_Caucasian" value="Caucasian">
+            <label for="race_Caucasian">Caucasiano</label>
+          </div>
+          <div class="race-option">
+            <input type="radio" name="race" id="race_Hispanic" value="Hispanic">
+            <label for="race_Hispanic">Hispânico</label>
+          </div>
+          <div class="race-option">
+            <input type="radio" name="race" id="race_Other" value="Other">
+            <label for="race_Other">Outro</label>
+          </div>
+        </div>
+      </div>
+      <button type="submit">Prever</button>
+    </form>
+    <div id="res"></div>
+  </div>
+
+<script>
+document.getElementById("form").onsubmit = async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const data = Object.fromEntries(new FormData(form).entries());
+  // Enviar apenas o campo 'race' (não precisa mais de one-hot no frontend)
+  data.age = Number(data.age);
+  data.bmi = Number(data.bmi);
+  data.hbA1c_level = Number(data.hbA1c_level);
+  data.blood_glucose_level = Number(data.blood_glucose_level);
+  data.hypertension = Number(data.hypertension);
+  data.heart_disease = Number(data.heart_disease);
+  // Validação extra
+  for (const key of ["gender","age","bmi","hbA1c_level","blood_glucose_level","hypertension","heart_disease","smoking_history","race"]) {
+    if (!data[key] && data[key] !== 0) {
+      document.getElementById("res").innerText = `Preencha o campo obrigatório: ${key}`;
+      document.getElementById("res").className = "result-diabetes";
+      return;
+    }
+  }
+  const resultDiv = document.getElementById("res");
+  resultDiv.innerText = "";
+  resultDiv.className = "";
+  try {
+    const res = await fetch("http://localhost:8000/predict", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      resultDiv.innerText = `Erro ao consultar IA: ${res.status} - ${err}`;
+      resultDiv.className = "result-diabetes";
+      return;
+    }
+    const json = await res.json();
+    if (json.diabetes === 1) {
+      resultDiv.innerText = "Diagnóstico: Possível Diabetes";
+      resultDiv.className = "result-diabetes";
+    } else {
+      resultDiv.innerText = "Diagnóstico: Saudável";
+      resultDiv.className = "result-healthy";
+    }
+  } catch (error) {
+    resultDiv.innerText = `Erro de conexão: ${error}`;
+    resultDiv.className = "result-diabetes";
+  }
+};
+</script>
+</body>
+</html>
