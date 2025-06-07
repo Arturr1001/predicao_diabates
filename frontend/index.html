@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Predição de Diabetes</title>
+  <title>Diabetes Prediction</title>
   <style>
     * {
       margin: 0;
@@ -180,87 +180,87 @@
 </head>
 <body>
   <div class="container">
-    <h2>Predição de Diabetes</h2>
+    <h2>Diabetes Prediction</h2>
     <form id="form">
       <div class="field-group">
-        <label for="gender">Gênero*:</label>
+        <label for="gender">Gender*:</label>
         <select name="gender" id="gender" required>
-          <option value="">Selecione</option>
-          <option value="Male">Masculino</option>
-          <option value="Female">Feminino</option>
-          <option value="Other">Outro</option>
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
         </select>
       </div>
       <div class="field-group">
-        <label for="age">Idade*:</label>
+        <label for="age">Age*:</label>
         <input name="age" id="age" type="number" min="0" required>
       </div>
       <div class="field-group">
-        <label for="bmi">Índice de Massa Corporal (IMC)*:</label>
+        <label for="bmi">Body Mass Index (BMI)*:</label>
         <input name="bmi" id="bmi" type="number" step="0.01" min="0" required>
       </div>
       <div class="field-group">
-        <label for="hbA1c_level">Nível de HbA1c (%)*:</label>
+        <label for="hbA1c_level">HbA1c Level (%)*:</label>
         <input name="hbA1c_level" id="hbA1c_level" type="number" step="0.01" min="0" required>
       </div>
       <div class="field-group">
-        <label for="blood_glucose_level">Glicose no Sangue (mg/dL)*:</label>
+        <label for="blood_glucose_level">Blood Glucose Level (mg/dL)*:</label>
         <input name="blood_glucose_level" id="blood_glucose_level" type="number" min="0" required>
       </div>
       <div class="field-group">
-        <label for="hypertension">Hipertensão*:</label>
+        <label for="hypertension">Hypertension*:</label>
         <select name="hypertension" id="hypertension" required>
-          <option value="">Selecione</option>
-          <option value="1">Sim</option>
-          <option value="0">Não</option>
+          <option value="">Select</option>
+          <option value="1">Yes</option>
+          <option value="0">No</option>
         </select>
       </div>
       <div class="field-group">
-        <label for="heart_disease">Doença Cardíaca*:</label>
+        <label for="heart_disease">Heart Disease*:</label>
         <select name="heart_disease" id="heart_disease" required>
-          <option value="">Selecione</option>
-          <option value="1">Sim</option>
-          <option value="0">Não</option>
+          <option value="">Select</option>
+          <option value="1">Yes</option>
+          <option value="0">No</option>
         </select>
       </div>
       <div class="field-group">
-        <label for="smoking_history">Histórico de Fumo*:</label>
+        <label for="smoking_history">Smoking History*:</label>
         <select name="smoking_history" id="smoking_history" required>
-          <option value="">Selecione</option>
-          <option value="never">Nunca fumou</option>
-          <option value="No Info">Sem informação</option>
-          <option value="current">Fumante atual</option>
-          <option value="former">Ex-fumante</option>
-          <option value="not current">Não é fumante atual</option>
-          <option value="ever">Já fumou</option>
+          <option value="">Select</option>
+          <option value="never">Never smoked</option>
+          <option value="No Info">No information</option>
+          <option value="current">Current smoker</option>
+          <option value="former">Former smoker</option>
+          <option value="not current">Not current smoker</option>
+          <option value="ever">Ever smoked</option>
         </select>
       </div>
       <div class="field-group race-section">
-        <div class="race-title">Raça*:</div>
+        <div class="race-title">Race*:</div>
         <div class="race-options">
           <div class="race-option">
             <input type="radio" name="race" id="race_AfricanAmerican" value="AfricanAmerican" required>
-            <label for="race_AfricanAmerican">Africano Americano</label>
+            <label for="race_AfricanAmerican">African American</label>
           </div>
           <div class="race-option">
             <input type="radio" name="race" id="race_Asian" value="Asian">
-            <label for="race_Asian">Asiático</label>
+            <label for="race_Asian">Asian</label>
           </div>
           <div class="race-option">
             <input type="radio" name="race" id="race_Caucasian" value="Caucasian">
-            <label for="race_Caucasian">Caucasiano</label>
+            <label for="race_Caucasian">Caucasian</label>
           </div>
           <div class="race-option">
             <input type="radio" name="race" id="race_Hispanic" value="Hispanic">
-            <label for="race_Hispanic">Hispânico</label>
+            <label for="race_Hispanic">Hispanic</label>
           </div>
           <div class="race-option">
             <input type="radio" name="race" id="race_Other" value="Other">
-            <label for="race_Other">Outro</label>
+            <label for="race_Other">Other</label>
           </div>
         </div>
       </div>
-      <button type="submit">Prever</button>
+      <button type="submit">Predict</button>
     </form>
     <div id="res"></div>
   </div>
@@ -270,17 +270,15 @@ document.getElementById("form").onsubmit = async (e) => {
   e.preventDefault();
   const form = e.target;
   const data = Object.fromEntries(new FormData(form).entries());
-  // Enviar apenas o campo 'race' (não precisa mais de one-hot no frontend)
   data.age = Number(data.age);
   data.bmi = Number(data.bmi);
   data.hbA1c_level = Number(data.hbA1c_level);
   data.blood_glucose_level = Number(data.blood_glucose_level);
   data.hypertension = Number(data.hypertension);
   data.heart_disease = Number(data.heart_disease);
-  // Validação extra
   for (const key of ["gender","age","bmi","hbA1c_level","blood_glucose_level","hypertension","heart_disease","smoking_history","race"]) {
     if (!data[key] && data[key] !== 0) {
-      document.getElementById("res").innerText = `Preencha o campo obrigatório: ${key}`;
+      document.getElementById("res").innerText = `Please fill the required field: ${key}`;
       document.getElementById("res").className = "result-diabetes";
       return;
     }
@@ -296,20 +294,20 @@ document.getElementById("form").onsubmit = async (e) => {
     });
     if (!res.ok) {
       const err = await res.text();
-      resultDiv.innerText = `Erro ao consultar IA: ${res.status} - ${err}`;
+      resultDiv.innerText = `Error contacting AI: ${res.status} - ${err}`;
       resultDiv.className = "result-diabetes";
       return;
     }
     const json = await res.json();
     if (json.diabetes === 1) {
-      resultDiv.innerText = "Diagnóstico: Possível Diabetes";
+      resultDiv.innerText = "Diagnosis: Possible Diabetes";
       resultDiv.className = "result-diabetes";
     } else {
-      resultDiv.innerText = "Diagnóstico: Saudável";
+      resultDiv.innerText = "Diagnosis: Healthy";
       resultDiv.className = "result-healthy";
     }
   } catch (error) {
-    resultDiv.innerText = `Erro de conexão: ${error}`;
+    resultDiv.innerText = `Connection error: ${error}`;
     resultDiv.className = "result-diabetes";
   }
 };
