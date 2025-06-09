@@ -38,10 +38,10 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 pipeline.fit(X_train, y_train)
 
 # Garantir que a pasta app existe
-os.makedirs("../projeto-diabetes/app", exist_ok=True)
+os.makedirs("app", exist_ok=True)
 # Salvar modelo
 try:
-    joblib.dump(pipeline, "../app/projeto-diabetes/diabetes_model.pkl")
-    print("Modelo salvo em ../app/projeto-diabetes/diabetes_model.pkl")
+    joblib.dump(pipeline, r"app/diabetes_model.pkl")
+    print("Modelo salvo em app/diabetes_model.pkl")
 except Exception as e:
     print(f"Erro ao salvar modelo: {e}")
